@@ -42286,7 +42286,12 @@ a.u-link.u-text-hover-grey-90:hover {
   }
 
   .u-header .u-social-icons-1 {
+    margin-top: 20px;
     margin-right: auto;
+  }
+
+  .u-header .u-menu-1 {
+    margin-top: 20px;
   }
 }
 @media (max-width: 575px) {
