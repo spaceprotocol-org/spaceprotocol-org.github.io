@@ -41895,7 +41895,7 @@ a.u-link.u-text-hover-grey-90:hover {
         font-weight: 700;
         list-icon-spacing: 0.3;
         list-icon-size: 0.8;
-        font-family: 'Archivo Black';
+        font-family: SF-Pro-Display-Black;
         }
         h3
         {
@@ -41905,7 +41905,7 @@ a.u-link.u-text-hover-grey-90:hover {
         font-size: 2.25rem;
         margin-top: 20px;
         margin-bottom: 20px;
-        font-family: 'Archivo Black';
+        font-family: SF-Pro-Display-Black;
         }
         h4
         {
@@ -42250,8 +42250,9 @@ a.u-link.u-text-hover-grey-90:hover {
 
 .u-header .u-nav-1 {
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 1.25rem;
   letter-spacing: normal;
+  font-family: SF-Pro-Display-Regular;
 }
 
 .u-header .u-menu-close-1 {
