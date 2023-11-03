@@ -42293,17 +42293,35 @@ a.u-link.u-text-hover-grey-90:hover {
 }
 @media (max-width: 575px) {
   .u-header .u-sheet-1 {
-    min-height: 165px;
+    min-height: 74px;
+  }
+
+  .u-header .u-image-1 {
+    height: 22px;
+    margin-top: 32px;
+    margin-left: 0;
+  }
+
+  .u-header .u-social-icons-1 {
+    margin-top: -26px;
+    margin-right: 86px;
+  }
+
+  .u-header .u-menu-1 {
+    width: auto;
+    margin-top: -33px;
+    margin-right: 14px;
+    margin-bottom: 9px;
   }
 }
 .u-footer .u-sheet-1 {
-  min-height: 109px;
+  min-height: 47px;
 }
 
 .u-footer .u-image-1 {
   width: 314px;
   height: 47px;
-  margin: 31px auto 32px;
+  margin: 0 auto;
 }
 
 .u-footer .u-logo-image-1 {
