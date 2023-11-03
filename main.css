@@ -144,7 +144,7 @@
 .u-section-2 .u-text-3 {
   font-size: 1.125rem;
   font-family: SF-Pro-Display-Regular;
-  margin: 14px 0 0 13px;
+  margin: 14px 13px 0;
 }
 
 .u-section-2 .u-btn-1 {
@@ -208,6 +208,7 @@
 
   .u-section-2 .u-text-3 {
     margin-left: 0;
+    margin-right: 0;
   }
 
   .u-section-2 .u-btn-1 {
