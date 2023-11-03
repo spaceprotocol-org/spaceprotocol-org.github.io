@@ -42277,6 +42277,10 @@ a.u-link.u-text-hover-grey-90:hover {
     width: 47px;
     height: 55px;
   }
+
+  .u-header .u-nav-1 {
+    letter-spacing: normal;
+  }
 }
 @media (max-width: 767px) {
   .u-header .u-sheet-1 {
