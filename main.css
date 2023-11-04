@@ -521,6 +521,84 @@
   padding: 20px;
 }
 
+.u-section-3 .u-accordion-item-6 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.u-section-3 .u-accordion-link-6 {
+  font-weight: 700;
+  font-family: SF-Pro-Display-Black;
+  font-size: 1.25rem;
+  padding: 20px 30px;
+}
+
+.u-section-3 .u-icon-6 {
+  height: 20px;
+  width: 20px;
+  background-image: none;
+}
+
+.u-section-3 .u-accordion-pane-6 {
+  min-height: 150px;
+}
+
+.u-section-3 .u-container-layout-6 {
+  padding: 20px;
+}
+
+.u-section-3 .u-accordion-item-7 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.u-section-3 .u-accordion-link-7 {
+  font-weight: 700;
+  font-family: SF-Pro-Display-Black;
+  font-size: 1.25rem;
+  padding: 20px 30px;
+}
+
+.u-section-3 .u-icon-7 {
+  height: 20px;
+  width: 20px;
+  background-image: none;
+}
+
+.u-section-3 .u-accordion-pane-7 {
+  min-height: 150px;
+}
+
+.u-section-3 .u-container-layout-7 {
+  padding: 20px;
+}
+
+.u-section-3 .u-accordion-item-8 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.u-section-3 .u-accordion-link-8 {
+  font-weight: 700;
+  font-family: SF-Pro-Display-Black;
+  font-size: 1.25rem;
+  padding: 20px 30px;
+}
+
+.u-section-3 .u-icon-8 {
+  height: 20px;
+  width: 20px;
+  background-image: none;
+}
+
+.u-section-3 .u-accordion-pane-8 {
+  min-height: 150px;
+}
+
+.u-section-3 .u-container-layout-8 {
+  padding: 20px;
+}
+
 @media (max-width: 1199px) {
   .u-section-3 .u-text-1 {
     margin-top: 0;
@@ -559,6 +637,21 @@
   }
 
   .u-section-3 .u-container-layout-5 {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .u-section-3 .u-container-layout-6 {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .u-section-3 .u-container-layout-7 {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .u-section-3 .u-container-layout-8 {
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -612,9 +705,9 @@
 }
 
 .u-section-4 .u-social-icons-1 {
-  height: 32px;
+  height: 31px;
   min-height: 16px;
-  width: 32px;
+  width: 31px;
   min-width: 16px;
   margin: 13px auto 0;
 }
@@ -646,9 +739,9 @@
 }
 
 .u-section-4 .u-social-icons-2 {
-  height: 32px;
+  height: 31px;
   min-height: 16px;
-  width: 32px;
+  width: 31px;
   min-width: 16px;
   margin: 13px auto 0;
 }
@@ -675,9 +768,19 @@
     height: 232px;
   }
 
+  .u-section-4 .u-social-icons-1 {
+    margin-left: 217px;
+    margin-right: 217px;
+  }
+
   .u-section-4 .u-image-2 {
     width: 232px;
     height: 232px;
+  }
+
+  .u-section-4 .u-social-icons-2 {
+    margin-left: 217px;
+    margin-right: 217px;
   }
 }
 
