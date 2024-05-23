@@ -1,7 +1,15 @@
 document.addEventListener("DOMContentLoaded", async function() {
+    const loadingScreen = document.getElementById('loadingScreen');
+    
     Cesium.Ion.defaultAccessToken = CONFIG.CESIUM_ACCESS_TOKEN;
 
-    const viewer = new Cesium.Viewer("cesiumContainer", { shouldAnimate: true, });
+    const viewer = new Cesium.Viewer("cesiumContainer", { 
+        shouldAnimate: true,
+        geocoder: false,
+        sceneModePicker: false,
+        baseLayerPicker: false,
+        navigationHelpButton: false,
+    });
 
     viewer.scene.globe.enableLighting = true;
     viewer.scene.sun = new Cesium.Sun();
@@ -22,7 +30,13 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         animationViewModel.playReverseViewModel.command.beforeExecute.addEventListener(function(commandInfo) {
             viewer.clock.multiplier -= step;
-    });
+        });
+        
+        loadingScreen.style.display = 'none';
+
+        // Display search box after loading screen is hidden
+        const searchContainer = document.getElementById('searchContainer');
+        searchContainer.style.display = 'block';
     } catch (error) {
         console.log(error);
     }
@@ -33,124 +47,128 @@ document.addEventListener("DOMContentLoaded", async function() {
         const pickedObject = viewer.scene.pick(movement.position);
         if (Cesium.defined(pickedObject) && Cesium.defined(pickedObject.id)) {
             const entity = pickedObject.id;
-            const description = entity.properties.description?.getValue(Cesium.JulianDate.now());
-            const S_D = entity.properties.S_D?.getValue(Cesium.JulianDate.now());
-            const S_I = entity.properties.S_I?.getValue(Cesium.JulianDate.now());
-            const S_T = entity.properties.S_T?.getValue(Cesium.JulianDate.now());
-            const DIT = entity.properties.DIT?.getValue(Cesium.JulianDate.now());
-
-            infoBox.style.display = 'block';
-            infoBox.innerHTML = `<strong>NORAD CAT ID:</strong> <span>${entity.id}</span>
-                                 <strong>NAME:</strong> <span>${entity.name}</span>
-                                 <strong>Detectability:</strong> <span>${S_D}</span>
-                                 <strong>Identifiability:</strong> <span>${S_I}</span>
-                                 <strong>Trackability:</strong> <span>${S_T}</span>
-                                 <strong>DIT:</strong> <span>${DIT}</span>`;
+            displayInfoBox(entity);
         } else {
             infoBox.style.display = 'none';
         }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
+    function displayInfoBox(entity) {
+        const description = entity.properties.description?.getValue(Cesium.JulianDate.now());
+        const S_D = entity.properties.S_D?.getValue(Cesium.JulianDate.now());
+        const S_I = entity.properties.S_I?.getValue(Cesium.JulianDate.now());
+        const S_T = entity.properties.S_T?.getValue(Cesium.JulianDate.now());
+        const DIT = entity.properties.DIT?.getValue(Cesium.JulianDate.now());
+
+        infoBox.style.display = 'block';
+        infoBox.innerHTML = `<strong>NORAD CAT ID:</strong> <span>${entity.id}</span>
+                             <strong>NAME:</strong> <span>${entity.name}</span>
+                             <strong>Detectability:</strong> <span>${S_D}</span>
+                             <strong>Identifiability:</strong> <span>${S_I}</span>
+                             <strong>Trackability:</strong> <span>${S_T}</span>
+                             <strong>DIT:</strong> <span>${DIT}</span>`;
+    }
+
     function updateColors(property, numberOfBins = 5) {
-    let minValue = Infinity;
-    let maxValue = -Infinity;
-    let hasValues = false;
+        let minValue = Infinity;
+        let maxValue = -Infinity;
+        let hasValues = false;
 
-    dataSource.entities.values.forEach(entity => {
-        const value = entity.properties[property]?.getValue(Cesium.JulianDate.now());
-        if (value !== undefined) {
-            hasValues = true;
-            if (value < minValue) minValue = value;
-            if (value > maxValue) maxValue = value;
-        }
-    });
-
-    if (!hasValues) {
-        removeLegend();
-        return;
-    }
-
-    const binSize = (maxValue - minValue) / numberOfBins;
-    const bins = [];
-    for (let i = 0; i < numberOfBins; i++) {
-        bins.push({
-            min: minValue + i * binSize,
-            max: minValue + (i + 1) * binSize,
-            color: Cesium.Color.fromHsl(i / numberOfBins, 1.0, 0.5, 1.0)
-        });
-    }
-
-    function getColor(value) {
-        for (let bin of bins) {
-            if (value >= bin.min && value <= bin.max) {
-                return bin.color;
+        dataSource.entities.values.forEach(entity => {
+            const value = entity.properties[property]?.getValue(Cesium.JulianDate.now());
+            if (value !== undefined) {
+                hasValues = true;
+                if (value < minValue) minValue = value;
+                if (value > maxValue) maxValue = value;
             }
+        });
+
+        if (!hasValues) {
+            removeLegend();
+            return;
         }
-        return Cesium.Color.WHITE;
+
+        const binSize = (maxValue - minValue) / numberOfBins;
+        const bins = [];
+        for (let i = 0; i < numberOfBins; i++) {
+            bins.push({
+                min: minValue + i * binSize,
+                max: minValue + (i + 1) * binSize,
+                color: Cesium.Color.fromHsl(i / numberOfBins, 1.0, 0.5, 1.0)
+            });
+        }
+
+        function getColor(value) {
+            for (let bin of bins) {
+                if (value >= bin.min && value <= bin.max) {
+                    return bin.color;
+                }
+            }
+            return Cesium.Color.WHITE;
+        }
+
+        dataSource.entities.values.forEach(entity => {
+            const value = entity.properties[property]?.getValue(Cesium.JulianDate.now());
+            if (value !== undefined && entity.point) {
+                const color = getColor(value);
+                entity.point.color = color;
+            }
+        });
+
+        generateLegend(bins);
     }
 
-    dataSource.entities.values.forEach(entity => {
-        const value = entity.properties[property]?.getValue(Cesium.JulianDate.now());
-        if (value !== undefined && entity.point) {
-            const color = getColor(value);
-            entity.point.color = color;
-        }
-    });
+    function generateLegend(bins) {
+        removeLegend();
 
-    generateLegend(bins);
-}
+        const legendContainer = document.createElement('div');
+        legendContainer.style.position = 'absolute';
+        legendContainer.style.bottom = '70px';
+        legendContainer.style.right = '20px';
+        legendContainer.style.padding = '15px';
+        legendContainer.style.backgroundColor = 'hsl(0, 0%, 99%)';
+        legendContainer.style.border = '1px solid hsl(0, 1%, 58%)';
+        legendContainer.style.borderRadius = '10px';
+        legendContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+        legendContainer.style.fontFamily = 'Arial, sans-serif';
+        legendContainer.style.fontSize = '14px';
+        legendContainer.style.color = '#0a0a0a';
+        legendContainer.style.zIndex = '1000';
+        legendContainer.id = 'legendContainer';
 
-function generateLegend(bins) {
-    removeLegend();
+        bins.forEach(bin => {
+            const legendItem = document.createElement('div');
+            legendItem.style.display = 'flex';
+            legendItem.style.alignItems = 'center';
+            legendItem.style.marginBottom = '10px';
 
-    const legendContainer = document.createElement('div');
-    legendContainer.style.position = 'absolute';
-    legendContainer.style.bottom = '70px';
-    legendContainer.style.right = '20px';
-    legendContainer.style.padding = '15px';
-    legendContainer.style.backgroundColor = 'hsl(0, 0%, 99%)';
-    legendContainer.style.border = '1px solid hsl(0, 1%, 58%)';
-    legendContainer.style.borderRadius = '10px';
-    legendContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-    legendContainer.style.fontFamily = 'Arial, sans-serif';
-    legendContainer.style.fontSize = '14px';
-    legendContainer.style.color = '#0a0a0a';
-    legendContainer.style.zIndex = '1000';
-    legendContainer.id = 'legendContainer';
+            const colorBox = document.createElement('div');
+            colorBox.style.width = '20px';
+            colorBox.style.height = '20px';
+            colorBox.style.backgroundColor = bin.color.toCssColorString();
+            colorBox.style.border = '1px solid #000';
+            colorBox.style.marginRight = '10px';
 
-    bins.forEach(bin => {
-        const legendItem = document.createElement('div');
-        legendItem.style.display = 'flex';
-        legendItem.style.alignItems = 'center';
-        legendItem.style.marginBottom = '10px';
+            const label = document.createElement('span');
+            label.textContent = `${bin.min.toFixed(2)} - ${bin.max.toFixed(2)}`;
 
-        const colorBox = document.createElement('div');
-        colorBox.style.width = '20px';
-        colorBox.style.height = '20px';
-        colorBox.style.backgroundColor = bin.color.toCssColorString();
-        colorBox.style.border = '1px solid #000';
-        colorBox.style.marginRight = '10px';
+            legendItem.appendChild(colorBox);
+            legendItem.appendChild(label);
 
-        const label = document.createElement('span');
-        label.textContent = `${bin.min.toFixed(2)} - ${bin.max.toFixed(2)}`;
+            legendContainer.appendChild(legendItem);
+        });
 
-        legendItem.appendChild(colorBox);
-        legendItem.appendChild(label);
-
-        legendContainer.appendChild(legendItem);
-    });
-
-    document.body.appendChild(legendContainer);
-}
-
-function removeLegend() {
-    const existingLegend = document.getElementById('legendContainer');
-    if (existingLegend) {
-        existingLegend.remove();
+        document.body.appendChild(legendContainer);
     }
-}
 
-updateColors('yourProperty', 5);
+    function removeLegend() {
+        const existingLegend = document.getElementById('legendContainer');
+        if (existingLegend) {
+            existingLegend.remove();
+        }
+    }
+
+    updateColors('yourProperty', 5);
 
     document.querySelectorAll('input[name="property"]').forEach(radio => {
         radio.addEventListener('change', event => {
@@ -168,4 +186,23 @@ updateColors('yourProperty', 5);
             }
         });
     });
+
+    // Search functionality
+    const searchButton = document.getElementById('searchButton');
+    const searchInput = document.getElementById('searchInput');
+
+    searchButton.addEventListener('click', () => {
+        const searchId = searchInput.value.trim();
+        if (searchId) {
+            const entity = dataSource.entities.getById(searchId);
+            if (entity) {
+                viewer.flyTo(entity).then(() => {
+                    displayInfoBox(entity);
+                });
+            } else {
+                alert('Entity not found.');
+            }
+        }
+    });
 });
+
