@@ -68,10 +68,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     infoBox.innerHTML = `<div class="info-content">
                              <strong>NORAD CAT ID:</strong> <span>${entity.id}</span>
                              <strong>NAME:</strong> <span>${entity.name}</span>
-                             <strong>Detectability:</strong> <span>${S_D}</span>
-                             <strong>Identifiability:</strong> <span>${S_I}</span>
-                             <strong>Trackability:</strong> <span>${S_T}</span>
-                             <strong>DIT:</strong> <span>${DIT}</span>
+                             <strong>L-Detectability:</strong> <span>${S_D}</span>
+                             <strong>L-Identifiability:</strong> <span>${S_I}</span>
+                             <strong>L-Trackability:</strong> <span>${S_T}</span>
+                             <strong>L-DIT:</strong> <span>${DIT}</span>
                          </div>`;
 }
     function showEntityPath(entity) {
