@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     viewer.scene.moon = new Cesium.Moon();
 
     let dataSource;
-    let highlightedEntity = null;
+    let highlightedEntities = [];
     try {
         const resource = await Cesium.IonResource.fromAssetId(CONFIG.ASSET_ID);
         dataSource = await Cesium.CzmlDataSource.load(resource);
@@ -50,14 +50,11 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (Cesium.defined(pickedObject) && Cesium.defined(pickedObject.id)) {
             const entity = pickedObject.id;
             displayInfoBox(entity);
-            highlightEntityPath(entity);
-            highlightedEntity = entity;
+            showEntityPath(entity);
+            highlightedEntities.push(entity);
         } else {
             infoBox.style.display = 'none';
-            if (highlightedEntity) {
-                removeEntityPath(highlightedEntity);
-                highlightedEntity = null;
-            }
+            removeAllEntityPaths();
         }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
@@ -77,19 +74,30 @@ document.addEventListener("DOMContentLoaded", async function() {
                              <strong>DIT:</strong> <span>${DIT}</span>`;
     }
 
-    function highlightEntityPath(entity) {
-        entity.path = new Cesium.PathGraphics({
-            leadTime: 0,
-            trailTime: 60 * 60 * 24,
-            width: 1,
-            material: Cesium.Color.WHITE
-        });
+    function showEntityPath(entity) {
+        if (!entity.path) {
+            entity.path = new Cesium.PathGraphics({
+                leadTime: 0,
+                trailTime: 60 * 60 * 24,
+                width: 1,
+                material: Cesium.Color.WHITE
+            });
+        }
         viewer.entities.add(entity);
     }
 
     function removeEntityPath(entity) {
-        entity.path = undefined;
-        viewer.entities.remove(entity);
+        if (entity.path) {
+            entity.path = undefined;
+            viewer.entities.remove(entity);
+        }
+    }
+
+    function removeAllEntityPaths() {
+        highlightedEntities.forEach(entity => {
+            removeEntityPath(entity);
+        });
+        highlightedEntities = [];
     }
 
     function updateColors(property, numberOfBins = 5) {
@@ -219,12 +227,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (searchId) {
             const entity = dataSource.entities.getById(searchId);
             if (entity) {
-                if (highlightedEntity) {
-                    removeEntityPath(highlightedEntity);
-                }
+                removeAllEntityPaths();
 
-                highlightEntityPath(entity);
-                highlightedEntity = entity;
+                showEntityPath(entity);
+                highlightedEntities.push(entity);
 
                 viewer.flyTo(entity).then(() => {
                     displayInfoBox(entity);
@@ -245,11 +251,8 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     const homeButton = viewer.homeButton.viewModel.command;
     homeButton.afterExecute.addEventListener(function() {
-        if (highlightedEntity) {
-            removeEntityPath(highlightedEntity);
-            highlightedEntity = null;
-            infoBox.style.display = 'none';
-        }
+        removeAllEntityPaths();
+        infoBox.style.display = 'none';
     });
 });
 
