@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         const legendContainer = document.createElement('div');
         legendContainer.style.position = 'absolute';
         legendContainer.style.bottom = '70px';
-        legendContainer.style.right = '20px';
+        legendContainer.style.right = '10px';
         legendContainer.style.padding = '15px';
         legendContainer.style.backgroundColor = 'hsl(0, 0%, 99%)';
         legendContainer.style.border = '1px solid hsl(0, 1%, 58%)';
@@ -168,7 +168,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
 
-    updateColors('yourProperty', 5);
+    // Select DIT by default at launch
+    updateColors('DIT', 5);
+    document.querySelector('input[value="DIT"]').checked = true;
 
     document.querySelectorAll('input[name="property"]').forEach(radio => {
         radio.addEventListener('change', event => {
@@ -185,13 +187,14 @@ document.addEventListener("DOMContentLoaded", async function() {
                 entity.point.color = Cesium.Color.YELLOW.withAlpha(1);
             }
         });
+        removeLegend(); // Clear the legend on reset
     });
 
     // Search functionality
     const searchButton = document.getElementById('searchButton');
     const searchInput = document.getElementById('searchInput');
 
-    searchButton.addEventListener('click', () => {
+    function performSearch() {
         const searchId = searchInput.value.trim();
         if (searchId) {
             const entity = dataSource.entities.getById(searchId);
@@ -202,6 +205,14 @@ document.addEventListener("DOMContentLoaded", async function() {
             } else {
                 alert('Entity not found.');
             }
+        }
+    }
+
+    searchButton.addEventListener('click', performSearch);
+
+    searchInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            performSearch();
         }
     });
 });
