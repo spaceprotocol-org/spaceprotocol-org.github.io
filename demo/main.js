@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         sceneModePicker: false,
         baseLayerPicker: false,
         navigationHelpButton: false,
+        homeButton: true
     });
 
     viewer.scene.globe.enableLighting = true;
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     viewer.scene.moon = new Cesium.Moon();
 
     let dataSource;
+    let highlightedEntity = null;
     try {
         const resource = await Cesium.IonResource.fromAssetId(CONFIG.ASSET_ID);
         dataSource = await Cesium.CzmlDataSource.load(resource);
@@ -48,8 +50,14 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (Cesium.defined(pickedObject) && Cesium.defined(pickedObject.id)) {
             const entity = pickedObject.id;
             displayInfoBox(entity);
+            highlightEntityPath(entity);
+            highlightedEntity = entity;
         } else {
             infoBox.style.display = 'none';
+            if (highlightedEntity) {
+                removeEntityPath(highlightedEntity);
+                highlightedEntity = null;
+            }
         }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
@@ -67,6 +75,21 @@ document.addEventListener("DOMContentLoaded", async function() {
                              <strong>Identifiability:</strong> <span>${S_I}</span>
                              <strong>Trackability:</strong> <span>${S_T}</span>
                              <strong>DIT:</strong> <span>${DIT}</span>`;
+    }
+
+    function highlightEntityPath(entity) {
+        entity.path = new Cesium.PathGraphics({
+            leadTime: 0,
+            trailTime: 60 * 60 * 24,
+            width: 1,
+            material: Cesium.Color.WHITE
+        });
+        viewer.entities.add(entity);
+    }
+
+    function removeEntityPath(entity) {
+        entity.path = undefined;
+        viewer.entities.remove(entity);
     }
 
     function updateColors(property, numberOfBins = 5) {
@@ -167,8 +190,6 @@ document.addEventListener("DOMContentLoaded", async function() {
             existingLegend.remove();
         }
     }
-
-    // Select DIT by default at launch
     updateColors('DIT', 5);
     document.querySelector('input[value="DIT"]').checked = true;
 
@@ -187,10 +208,9 @@ document.addEventListener("DOMContentLoaded", async function() {
                 entity.point.color = Cesium.Color.YELLOW.withAlpha(1);
             }
         });
-        removeLegend(); // Clear the legend on reset
+        removeLegend();
     });
 
-    // Search functionality
     const searchButton = document.getElementById('searchButton');
     const searchInput = document.getElementById('searchInput');
 
@@ -199,6 +219,13 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (searchId) {
             const entity = dataSource.entities.getById(searchId);
             if (entity) {
+                if (highlightedEntity) {
+                    removeEntityPath(highlightedEntity);
+                }
+
+                highlightEntityPath(entity);
+                highlightedEntity = entity;
+
                 viewer.flyTo(entity).then(() => {
                     displayInfoBox(entity);
                 });
@@ -213,6 +240,15 @@ document.addEventListener("DOMContentLoaded", async function() {
     searchInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
             performSearch();
+        }
+    });
+
+    const homeButton = viewer.homeButton.viewModel.command;
+    homeButton.afterExecute.addEventListener(function() {
+        if (highlightedEntity) {
+            removeEntityPath(highlightedEntity);
+            highlightedEntity = null;
+            infoBox.style.display = 'none';
         }
     });
 });
