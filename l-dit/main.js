@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     infoBox.style.display = 'block';
     infoBox.innerHTML = `<div class="info-content">
+    			     <strong>The higher the score the better</strong></span>
                              <strong>NORAD CAT ID:</strong> <span>${entity.id}</span>
                              <strong>NAME:</strong> <span>${entity.name}</span>
                              <strong>L-Detectability:</strong> <span>${S_D}</span>
