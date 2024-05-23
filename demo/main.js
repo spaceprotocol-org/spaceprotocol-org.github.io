@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", async function() {
     const loadingScreen = document.getElementById('loadingScreen');
-    
     Cesium.Ion.defaultAccessToken = CONFIG.CESIUM_ACCESS_TOKEN;
 
-    const viewer = new Cesium.Viewer("cesiumContainer", { 
+    const viewer = new Cesium.Viewer("cesiumContainer", {
         shouldAnimate: true,
         geocoder: false,
         sceneModePicker: false,
@@ -21,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     try {
         const resource = await Cesium.IonResource.fromAssetId(CONFIG.ASSET_ID);
         dataSource = await Cesium.CzmlDataSource.load(resource);
-        await viewer.dataSources.add(dataSource);        
+        await viewer.dataSources.add(dataSource);
         viewer.clock.multiplier = 1;
         const step = 10;
 
@@ -33,12 +32,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         animationViewModel.playReverseViewModel.command.beforeExecute.addEventListener(function(commandInfo) {
             viewer.clock.multiplier -= step;
         });
-        
-        loadingScreen.style.display = 'none';
 
-        // Display search box after loading screen is hidden
+        loadingScreen.style.display = 'none';
         const searchContainer = document.getElementById('searchContainer');
         searchContainer.style.display = 'block';
+        displayTopAndBottomSatellitesByDIT();
+
     } catch (error) {
         console.log(error);
     }
@@ -59,21 +58,22 @@ document.addEventListener("DOMContentLoaded", async function() {
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
     function displayInfoBox(entity) {
-        const description = entity.properties.description?.getValue(Cesium.JulianDate.now());
-        const S_D = entity.properties.S_D?.getValue(Cesium.JulianDate.now());
-        const S_I = entity.properties.S_I?.getValue(Cesium.JulianDate.now());
-        const S_T = entity.properties.S_T?.getValue(Cesium.JulianDate.now());
-        const DIT = entity.properties.DIT?.getValue(Cesium.JulianDate.now());
+    const description = entity.properties.description?.getValue(Cesium.JulianDate.now());
+    const S_D = entity.properties.S_D?.getValue(Cesium.JulianDate.now());
+    const S_I = entity.properties.S_I?.getValue(Cesium.JulianDate.now());
+    const S_T = entity.properties.S_T?.getValue(Cesium.JulianDate.now());
+    const DIT = entity.properties.DIT?.getValue(Cesium.JulianDate.now());
 
-        infoBox.style.display = 'block';
-        infoBox.innerHTML = `<strong>NORAD CAT ID:</strong> <span>${entity.id}</span>
+    infoBox.style.display = 'block';
+    infoBox.innerHTML = `<div class="info-content">
+                             <strong>NORAD CAT ID:</strong> <span>${entity.id}</span>
                              <strong>NAME:</strong> <span>${entity.name}</span>
                              <strong>Detectability:</strong> <span>${S_D}</span>
                              <strong>Identifiability:</strong> <span>${S_I}</span>
                              <strong>Trackability:</strong> <span>${S_T}</span>
-                             <strong>DIT:</strong> <span>${DIT}</span>`;
-    }
-
+                             <strong>DIT:</strong> <span>${DIT}</span>
+                         </div>`;
+}
     function showEntityPath(entity) {
         if (!entity.path) {
             entity.path = new Cesium.PathGraphics({
@@ -151,27 +151,12 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     function generateLegend(bins) {
         removeLegend();
-
-        const legendContainer = document.createElement('div');
-        legendContainer.style.position = 'absolute';
-        legendContainer.style.bottom = '70px';
-        legendContainer.style.right = '10px';
-        legendContainer.style.padding = '15px';
-        legendContainer.style.backgroundColor = 'hsl(0, 0%, 99%)';
-        legendContainer.style.border = '1px solid hsl(0, 1%, 58%)';
-        legendContainer.style.borderRadius = '10px';
-        legendContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-        legendContainer.style.fontFamily = 'Arial, sans-serif';
-        legendContainer.style.fontSize = '14px';
-        legendContainer.style.color = '#0a0a0a';
-        legendContainer.style.zIndex = '1000';
-        legendContainer.id = 'legendContainer';
+        const legendContainer = document.getElementById('legendContainer');
 
         bins.forEach(bin => {
             const legendItem = document.createElement('div');
             legendItem.style.display = 'flex';
             legendItem.style.alignItems = 'center';
-            legendItem.style.marginBottom = '10px';
 
             const colorBox = document.createElement('div');
             colorBox.style.width = '20px';
@@ -188,16 +173,15 @@ document.addEventListener("DOMContentLoaded", async function() {
 
             legendContainer.appendChild(legendItem);
         });
-
-        document.body.appendChild(legendContainer);
     }
 
     function removeLegend() {
-        const existingLegend = document.getElementById('legendContainer');
-        if (existingLegend) {
-            existingLegend.remove();
+        const legendContainer = document.getElementById('legendContainer');
+        while (legendContainer.firstChild) {
+            legendContainer.removeChild(legendContainer.firstChild);
         }
     }
+
     updateColors('DIT', 5);
     document.querySelector('input[value="DIT"]').checked = true;
 
@@ -228,10 +212,8 @@ document.addEventListener("DOMContentLoaded", async function() {
             const entity = dataSource.entities.getById(searchId);
             if (entity) {
                 removeAllEntityPaths();
-
                 showEntityPath(entity);
                 highlightedEntities.push(entity);
-
                 viewer.flyTo(entity).then(() => {
                     displayInfoBox(entity);
                 });
@@ -254,5 +236,42 @@ document.addEventListener("DOMContentLoaded", async function() {
         removeAllEntityPaths();
         infoBox.style.display = 'none';
     });
-});
 
+    async function displayTopAndBottomSatellitesByDIT() {
+        const entities = dataSource.entities.values;
+        const satellitesWithDIT = entities
+            .map(entity => ({
+                id: entity.id,
+                name: entity.name,
+                DIT: entity.properties.DIT?.getValue(Cesium.JulianDate.now())
+            }))
+            .filter(satellite => satellite.DIT !== undefined);
+
+        satellitesWithDIT.sort((a, b) => a.DIT - b.DIT);
+
+        const top5Satellites = satellitesWithDIT.slice(-5).reverse();
+        const bottom5Satellites = satellitesWithDIT.slice(0, 5);
+
+        const infoboxContent = `<div><h3>Highest ranked by L-DIT</h3>${generateSatelliteList(top5Satellites)}</div>
+                                <div><h3>Lowest ranked by L-DIT</h3>${generateSatelliteList(bottom5Satellites)}</div>`;
+
+        const topBottomInfoBox = document.getElementById('topBottomInfoBox');
+        topBottomInfoBox.innerHTML = infoboxContent;
+    }
+
+    function generateSatelliteList(satellites) {
+        return `<ul style="padding-left: 20px; list-style-type: none;">
+                    ${satellites.map(satellite => `<li>[ID: ${satellite.id}] ${satellite.name}</li>`).join('')}
+                </ul>`;
+    }
+
+    const rankingsToggle = document.getElementById('rankingsToggle');
+    rankingsToggle.addEventListener('click', () => {
+        const topBottomInfoBox = document.getElementById('topBottomInfoBox');
+        if (topBottomInfoBox) {
+            topBottomInfoBox.style.display = topBottomInfoBox.style.display === 'none' ? 'block' : 'none';
+        }
+    });
+
+    openNav();
+});

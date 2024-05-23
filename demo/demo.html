@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Protocol's Demo</title>
     <script src="https://cesium.com/downloads/cesiumjs/releases/1.91/Build/Cesium/Cesium.js"></script>
-    <script src="config.js"></script> <!-- Load the config file -->
+    <script src="config.js"></script>
     <link href="https://cesium.com/downloads/cesiumjs/releases/1.91/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         html, body, #cesiumContainer {
             width: 100%;
@@ -41,73 +42,104 @@
             color: #333;
         }
 
-        #infoBox, #controls {
-            background-color: hsl(0, 0%, 99%);
-            padding: 15px;
-            border: 1px solid hsl(0, 1%, 58%);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-            max-width: 300px;
-            word-wrap: break-word;
-            font-family: 'Arial', sans-serif;
-            transition: transform 0.1s;
-            color: #0a0a0a;
-        }
-
-        #infoBox:hover, #controls:hover {
-            transform: scale(1.02);
-        }
-
-        #infoBox strong, #controls strong {
-            display: block;
-            margin-top: 10px;
-            font-size: 14px;
-            color: #444;
-        }
-
-        #infoBox span, #controls span {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #555;
-        }
-
         #infoBox {
+	    background: rgba(255, 255, 255, 0.95);
+	    padding: 20px;
+	    border: 1px solid rgba(0, 0, 0, 0.1);
+	    border-radius: 15px;
+	    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+	    z-index: 1;
+	    max-height: 80vh;
+	    word-wrap: break-word;
+	    font-family: 'Arial', sans-serif;
+	    transition: transform 0.3s, max-height 0.3s;
+	    color: #333;
+	    position: absolute;
+	    top: 80px;
+	    right: 20px;
+	    margin: 10px;
+	    overflow: hidden;
+	    display: flex;
+	    flex-direction: column;
+	    overflow-y: auto;
+	}
+
+	#infoBox:hover {
+	    transform: scale(1.05);
+	    max-height: 85vh;
+	}
+
+	#infoBox strong {
+	    display: block;
+	    font-size: 14px;
+	    color: #444;
+	    margin-top: 10px;
+	}
+
+	#infoBox span {
+	    font-size: 14px;
+	    color: #000;
+	}
+
+	#infoBox .info-content {
+	    flex: 1;
+	    overflow-y: auto;
+	}
+
+        #sideNav {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            padding-top: 20px;
+            overflow-x: hidden;
+            transition: 0.5s;
+        }
+
+        #sideNav a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        #sideNav a:hover {
+            color: #f1f1f1;
+        }
+
+        #sideNav .closebtn {
             position: absolute;
-            top: 80px;
-            left: 10px;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
         }
 
         #controls {
-            position: absolute;
-            top: 80px;
-            right: 10px;
+            margin-top: 50px;
         }
 
         #controls label {
-            display: flex;
-            align-items: center;
+            display: block;
             margin-bottom: 10px;
             font-size: 14px;
-            color: #333;
+            color: #fff;
             cursor: pointer;
             font-weight: bold;
         }
 
-        #controls label span {
-            margin-left: 2px;
-        }
-
         #controls input[type="radio"] {
             accent-color: #444;
-        }
-
-        #controls input[type="radio"] {
-            accent-color: #444;
-            vertical-align: middle;
-            margin-top: -10px;
         }
 
         #reset {
@@ -128,17 +160,10 @@
         }
 
         #searchContainer {
-            position: absolute;
-            top: 5px;
-            right: 50px;
-            z-index: 1000;
-            display: none; /* Initially hidden */
-            align-items: center;
-            background-color: hsl(0, 0%, 99%);
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
             padding: 10px 15px;
-            border: 1px solid hsl(0, 1%, 58%);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         #searchContainer input {
@@ -146,8 +171,7 @@
             font-size: 14px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            margin-right: 10px;
-            flex: 1;
+            margin-bottom: 10px;
             transition: border-color 0.3s;
         }
 
@@ -175,6 +199,75 @@
         #searchContainer button:active {
             background-color: #388e3c;
         }
+
+        #legendContainer {
+            position: absolute;
+            bottom: 40px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background-color: hsl(0, 0%, 99%);
+            border: 1px solid hsl(0, 1%, 58%);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            color: #0a0a0a;
+            z-index: 1000;
+        }
+
+        #rankingsToggle {
+            padding: 8px 15px;
+            font-size: 14px;
+            background-color: lightgrey;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #rankingsToggle:hover {
+            background-color: grey;
+            transform: scale(1.05);
+        }
+
+        #rankingsToggle:active {
+            background-color: #388e3c;
+        }
+
+        #topBottomInfoBox {
+            position: absolute;
+            bottom: 90px;
+            right: 10px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            color: #333;
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        #openNavBtn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #111;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            z-index: 2;
+        }
     </style>
 </head>
 <body>
@@ -182,19 +275,43 @@
         <img src="loading.gif" alt="Loading">
     </div>
     <div id="cesiumContainer"></div>
-    <div id="infoBox" style="display: none;"></div>
-    <div id="controls">
-        <label><input type="radio" name="property" value="S_D"> <span>L-Detectability</span></label>
-        <label><input type="radio" name="property" value="S_I"> <span>L-Identifiability</span></label>
-        <label><input type="radio" name="property" value="S_T"> <span>L-Trackability</span></label>
-        <label><input type="radio" name="property" value="DIT"> <span>L-DIT</span></label>
-        <button id="reset">Reset</button>
+    <div id="infoBox" style="display: none;"> 
+        <h3>Info Title</h3>
+        <p>Some information goes here.</p>
+        <p>More information here.</p>
+        <!-- Add more content as needed -->
     </div>
-    <div id="searchContainer">
-        <input type="text" id="searchInput" placeholder="ID">
-        <button id="searchButton">Search</button>
+    <div id="sideNav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div id="controls">
+            <label><input type="radio" name="property" value="S_D"> <span>L-Detectability</span></label>
+            <label><input type="radio" name="property" value="S_I"> <span>L-Identifiability</span></label>
+            <label><input type="radio" name="property" value="S_T"> <span>L-Trackability</span></label>
+            <label><input type="radio" name="property" value="DIT"> <span>L-DIT</span></label>
+            <button id="reset">Reset</button>
+        </div>
+        <div id="searchContainer">
+            <input type="text" id="searchInput" placeholder="NORAD ID">
+            <button id="searchButton">Search</button>
+        </div>
+        <button id="rankingsToggle">Toggle Rankings</button>
     </div>
+    <button id="openNavBtn" onclick="openNav()">☰</button>
+    <div id="legendContainer"></div>
+    <div id="topBottomInfoBox"></div>
     <script src="main.js"></script>
+    <script>
+        function openNav() {
+            document.getElementById("sideNav").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+            document.getElementById("openNavBtn").style.display = 'none';
+        }
+
+        function closeNav() {
+            document.getElementById("sideNav").style.width = "0";
+            document.getElementById("main").style.marginLeft= "0";
+            document.getElementById("openNavBtn").style.display = 'block';
+        }
+    </script>
 </body>
 </html>
-
