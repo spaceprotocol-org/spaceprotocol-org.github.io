@@ -43,48 +43,48 @@
         }
 
         #infoBox {
-	    background: rgba(255, 255, 255, 0.95);
-	    padding: 20px;
-	    border: 1px solid rgba(0, 0, 0, 0.1);
-	    border-radius: 15px;
-	    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-	    z-index: 1;
-	    max-height: 80vh;
-	    word-wrap: break-word;
-	    font-family: 'Arial', sans-serif;
-	    transition: transform 0.3s, max-height 0.3s;
-	    color: #333;
-	    position: absolute;
-	    top: 80px;
-	    right: 20px;
-	    margin: 10px;
-	    overflow: hidden;
-	    display: flex;
-	    flex-direction: column;
-	    overflow-y: auto;
-	}
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            max-height: 80vh;
+            word-wrap: break-word;
+            font-family: 'Arial', sans-serif;
+            transition: transform 0.3s, max-height 0.3s;
+            color: #333;
+            position: absolute;
+            top: 130px;
+            right: 10px;
+            margin: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
 
-	#infoBox:hover {
-	    transform: scale(1.05);
-	    max-height: 85vh;
-	}
+        #infoBox:hover {
+            transform: scale(1.05);
+            max-height: 85vh;
+        }
 
-	#infoBox strong {
-	    display: block;
-	    font-size: 14px;
-	    color: #444;
-	    margin-top: 10px;
-	}
+        #infoBox strong {
+            display: block;
+            font-size: 14px;
+            color: #444;
+            margin-top: 10px;
+        }
 
-	#infoBox span {
-	    font-size: 14px;
-	    color: #000;
-	}
+        #infoBox span {
+            font-size: 14px;
+            color: #000;
+        }
 
-	#infoBox .info-content {
-	    flex: 1;
-	    overflow-y: auto;
-	}
+        #infoBox .info-content {
+            flex: 1;
+            overflow-y: auto;
+        }
 
         #sideNav {
             height: 100%;
@@ -268,6 +268,15 @@
             border-radius: 5px;
             z-index: 2;
         }
+
+        #logo {
+            position: fixed;
+            top: 5px;
+            right: 20px;
+            width: 200px;  /* Adjust the size as needed */
+            height: auto;  /* Maintain aspect ratio */
+            z-index: 1001; /* Ensure it is above other elements */
+        }
     </style>
 </head>
 <body>
@@ -275,8 +284,8 @@
         <img src="loading.gif" alt="Loading">
     </div>
     <div id="cesiumContainer"></div>
-    <div id="infoBox" style="display: none;"> 
-    </div>
+    <img src="logo.png" alt="Logo" id="logo" style="display:none;">
+    <div id="infoBox" style="display: none;"></div>
     <div id="sideNav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <div id="controls">

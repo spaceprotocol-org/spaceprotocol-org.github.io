@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         const resource = await Cesium.IonResource.fromAssetId(CONFIG.ASSET_ID);
         dataSource = await Cesium.CzmlDataSource.load(resource);
         await viewer.dataSources.add(dataSource);
-        viewer.clock.multiplier = 1;
+        viewer.clock.multiplier = 50;
         const step = 10;
 
         const animationViewModel = viewer.animation.viewModel;
@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
 
         loadingScreen.style.display = 'none';
+        const logo = document.getElementById('logo');
+        logo.style.display = 'block';
         const searchContainer = document.getElementById('searchContainer');
         searchContainer.style.display = 'block';
         displayTopAndBottomSatellitesByDIT();
