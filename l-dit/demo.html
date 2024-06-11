@@ -268,15 +268,6 @@
             border-radius: 5px;
             z-index: 2;
         }
-
-        #logo {
-            position: fixed;
-            top: 5px;
-            right: 20px;
-            width: 200px;  /* Adjust the size as needed */
-            height: auto;  /* Maintain aspect ratio */
-            z-index: 1001; /* Ensure it is above other elements */
-        }
     </style>
 </head>
 <body>
@@ -284,7 +275,6 @@
         <img src="loading.gif" alt="Loading">
     </div>
     <div id="cesiumContainer"></div>
-    <img src="logo.png" alt="Logo" id="logo" style="display:none;">
     <div id="infoBox" style="display: none;"></div>
     <div id="sideNav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>

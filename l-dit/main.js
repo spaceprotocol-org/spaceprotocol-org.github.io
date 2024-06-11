@@ -34,11 +34,15 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
 
         loadingScreen.style.display = 'none';
-        const logo = document.getElementById('logo');
-        logo.style.display = 'block';
         const searchContainer = document.getElementById('searchContainer');
         searchContainer.style.display = 'block';
         displayTopAndBottomSatellitesByDIT();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const idFromURL = urlParams.get('id');
+        if (idFromURL) {
+            performSearch(idFromURL);
+        }
 
     } catch (error) {
         console.log(error);
@@ -60,15 +64,15 @@ document.addEventListener("DOMContentLoaded", async function() {
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
     function displayInfoBox(entity) {
-    const description = entity.properties.description?.getValue(Cesium.JulianDate.now());
-    const S_D = entity.properties.S_D?.getValue(Cesium.JulianDate.now());
-    const S_I = entity.properties.S_I?.getValue(Cesium.JulianDate.now());
-    const S_T = entity.properties.S_T?.getValue(Cesium.JulianDate.now());
-    const DIT = entity.properties.DIT?.getValue(Cesium.JulianDate.now());
+        const description = entity.properties.description?.getValue(Cesium.JulianDate.now());
+        const S_D = entity.properties.S_D?.getValue(Cesium.JulianDate.now());
+        const S_I = entity.properties.S_I?.getValue(Cesium.JulianDate.now());
+        const S_T = entity.properties.S_T?.getValue(Cesium.JulianDate.now());
+        const DIT = entity.properties.DIT?.getValue(Cesium.JulianDate.now());
 
-    infoBox.style.display = 'block';
-    infoBox.innerHTML = `<div class="info-content">
-    			     <strong>The higher the score the better</strong></span>
+        infoBox.style.display = 'block';
+        infoBox.innerHTML = `<div class="info-content">
+                             <strong>The higher the score the better</strong></span>
                              <strong>NORAD CAT ID:</strong> <span>${entity.id}</span>
                              <strong>NAME:</strong> <span>${entity.name}</span>
                              <strong>L-Detectability:</strong> <span>${S_D}</span>
@@ -76,7 +80,8 @@ document.addEventListener("DOMContentLoaded", async function() {
                              <strong>L-Trackability:</strong> <span>${S_T}</span>
                              <strong>L-DIT:</strong> <span>${DIT}</span>
                          </div>`;
-}
+    }
+
     function showEntityPath(entity) {
         if (!entity.path) {
             entity.path = new Cesium.PathGraphics({
@@ -209,8 +214,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     const searchButton = document.getElementById('searchButton');
     const searchInput = document.getElementById('searchInput');
 
-    function performSearch() {
-        const searchId = searchInput.value.trim();
+    function performSearch(searchId) {
+        if (!searchId) {
+            searchId = searchInput.value.trim();
+        }
         if (searchId) {
             const entity = dataSource.entities.getById(searchId);
             if (entity) {
@@ -221,12 +228,12 @@ document.addEventListener("DOMContentLoaded", async function() {
                     displayInfoBox(entity);
                 });
             } else {
-                alert('Entity not found.');
+                alert('Entity not found/ analysed');
             }
         }
     }
 
-    searchButton.addEventListener('click', performSearch);
+    searchButton.addEventListener('click', () => performSearch());
 
     searchInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
@@ -278,3 +285,4 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     openNav();
 });
+
