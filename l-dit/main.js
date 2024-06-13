@@ -1,6 +1,31 @@
 document.addEventListener("DOMContentLoaded", async function() {
     const loadingScreen = document.getElementById('loadingScreen');
     Cesium.Ion.defaultAccessToken = CONFIG.CESIUM_ACCESS_TOKEN;
+    
+    const oauth2Token = Cesium.Ion.defaultAccessToken;
+    const baseUrl = 'https://api.cesium.com/v1/assets';
+    
+    async function fetchLatestAsset() {
+    const params = new URLSearchParams({
+        limit: 1,
+        sortBy: 'DATE_ADDED',
+        sortOrder: 'DESC',
+        status: 'COMPLETE'
+    });
+
+    const response = await fetch(`${baseUrl}?${params.toString()}`, {
+        headers: {
+            'Authorization': `Bearer ${oauth2Token}`
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`Error fetching assets: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.items[0];
+    }   
 
     const viewer = new Cesium.Viewer("cesiumContainer", {
         shouldAnimate: true,
@@ -18,7 +43,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     let dataSource;
     let highlightedEntities = [];
     try {
-        const resource = await Cesium.IonResource.fromAssetId(CONFIG.ASSET_ID);
+        const latestAsset = await fetchLatestAsset();
+        const assetId = latestAsset.id;
+        
+        const resource = await Cesium.IonResource.fromAssetId(assetId);
         dataSource = await Cesium.CzmlDataSource.load(resource);
         await viewer.dataSources.add(dataSource);
         viewer.clock.multiplier = 50;
