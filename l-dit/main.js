@@ -1,13 +1,12 @@
 document.addEventListener("DOMContentLoaded", async function() {
     const loadingScreen = document.getElementById('loadingScreen');
-    Cesium.Ion.defaultAccessToken = CONFIG.CESIUM_ACCESS_TOKEN;
+    Cesium.Ion.defaultAccessToken = CONFIG.ACCESSTOKEN;
     
     const oauth2Token = Cesium.Ion.defaultAccessToken;
     const baseUrl = 'https://api.cesium.com/v1/assets';
     
     async function fetchLatestAsset() {
     const params = new URLSearchParams({
-        limit: 1,
         sortBy: 'DATE_ADDED',
         sortOrder: 'DESC',
         status: 'COMPLETE'
@@ -49,6 +48,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         const resource = await Cesium.IonResource.fromAssetId(assetId);
         dataSource = await Cesium.CzmlDataSource.load(resource);
         await viewer.dataSources.add(dataSource);
+        viewer.clock.currentTime = Cesium.JulianDate.now();
         viewer.clock.multiplier = 50;
         const step = 10;
 
