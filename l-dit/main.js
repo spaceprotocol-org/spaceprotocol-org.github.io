@@ -288,10 +288,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         satellitesWithDIT.sort((a, b) => a.DIT - b.DIT);
 
         const top5Satellites = satellitesWithDIT.slice(-5).reverse();
-        const bottom5Satellites = satellitesWithDIT.slice(0, 5);
+        const bottom5Satellites = satellitesWithDIT.slice(0, 10);
 
-        const infoboxContent = `<div><h3>Highest ranked by L-DIT</h3>${generateSatelliteList(top5Satellites)}</div>
-                                <div><h3>Lowest ranked by L-DIT</h3>${generateSatelliteList(bottom5Satellites)}</div>`;
+        // <div><h3>Highest ranked by L-DIT</h3>${generateSatelliteList(top5Satellites)}</div>
+        const infoboxContent = `<div><h3>Highest risk (lowest score) as ranked by L-DIT</h3>${generateSatelliteList(bottom5Satellites)}</div>`;
 
         const topBottomInfoBox = document.getElementById('topBottomInfoBox');
         topBottomInfoBox.innerHTML = infoboxContent;
@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     function generateSatelliteList(satellites) {
         return `<ul style="padding-left: 20px; list-style-type: none;">
-                    ${satellites.map(satellite => `<li>[ID: ${satellite.id}] ${satellite.name}</li>`).join('')}
+                    ${satellites.map(satellite => `<li> Score <b>${satellite.DIT.toFixed(2)}</b> [ID: ${satellite.id}] ${satellite.name}</li>`).join('')}
                 </ul>`;
     }
 
