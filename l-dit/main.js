@@ -295,6 +295,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         const topBottomInfoBox = document.getElementById('topBottomInfoBox');
         topBottomInfoBox.innerHTML = infoboxContent;
+        topBottomInfoBox.style.display = 'none';
     }
 
     function generateSatelliteList(satellites) {

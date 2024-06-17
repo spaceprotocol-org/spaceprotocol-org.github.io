@@ -220,7 +220,7 @@
         #rankingsToggle {
             padding: 8px 15px;
             font-size: 14px;
-            background-color: lightgrey;
+            background-color: rgb(214, 5, 5);
             border: none;
             border-radius: 5px;
             color: white;
@@ -229,12 +229,12 @@
         }
 
         #rankingsToggle:hover {
-            background-color: grey;
+            background-color: rgb(156, 21, 21);
             transform: scale(1.05);
         }
 
         #rankingsToggle:active {
-            background-color: #388e3c;
+            background-color: #d61233;
         }
 
         #topBottomInfoBox {
@@ -242,7 +242,7 @@
             bottom: 90px;
             right: 10px;
             padding: 15px;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(228, 66, 66, 0.9);
             border: 1px solid #ccc;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -286,10 +286,9 @@
             <button id="reset">Reset</button>
         </div>
         <div id="searchContainer">
-            <input type="text" id="searchInput" placeholder="NORAD ID">
-            <button id="searchButton">Search</button>
+            <input type="text" id="searchInput" placeholder="NORAD ID"><button id="searchButton">Search</button>
         </div>
-        <button id="rankingsToggle">Toggle Rankings</button>
+        <button id="rankingsToggle">Current Risk and Threat Assesment</button>
     </div>
     <button id="openNavBtn" onclick="openNav()">☰</button>
     <div id="legendContainer"></div>
