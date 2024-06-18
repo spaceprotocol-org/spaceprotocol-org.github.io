@@ -6,24 +6,24 @@ document.addEventListener("DOMContentLoaded", async function() {
     const baseUrl = 'https://api.cesium.com/v1/assets';
     
     async function fetchLatestAsset() {
-    const params = new URLSearchParams({
-        sortBy: 'DATE_ADDED',
-        sortOrder: 'DESC',
-        status: 'COMPLETE'
-    });
+        const params = new URLSearchParams({
+            sortBy: 'DATE_ADDED',
+            sortOrder: 'DESC',
+            status: 'COMPLETE'
+        });
 
-    const response = await fetch(`${baseUrl}?${params.toString()}`, {
-        headers: {
-            'Authorization': `Bearer ${oauth2Token}`
+        const response = await fetch(`${baseUrl}?${params.toString()}`, {
+            headers: {
+                'Authorization': `Bearer ${oauth2Token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error fetching assets: ${response.statusText}`);
         }
-    });
 
-    if (!response.ok) {
-        throw new Error(`Error fetching assets: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data.items[0];
+        const data = await response.json();
+        return data.items[0];
     }   
 
     const viewer = new Cesium.Viewer("cesiumContainer", {
@@ -252,9 +252,10 @@ document.addEventListener("DOMContentLoaded", async function() {
                 removeAllEntityPaths();
                 showEntityPath(entity);
                 highlightedEntities.push(entity);
-                viewer.flyTo(entity).then(() => {
-                    displayInfoBox(entity);
-                });
+                // viewer.flyTo(entity).then(() => {
+                //     displayInfoBox(entity);
+                // });
+                displayInfoBox(entity);
             } else {
                 alert('Entity not found/ analysed');
             }
@@ -289,18 +290,26 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         const top5Satellites = satellitesWithDIT.slice(-5).reverse();
         const bottom5Satellites = satellitesWithDIT.slice(0, 10);
-
         // <div><h3>Highest ranked by L-DIT</h3>${generateSatelliteList(top5Satellites)}</div>
-        const infoboxContent = `<div><h3>Highest risk (lowest score) as ranked by L-DIT</h3>${generateSatelliteList(bottom5Satellites)}</div>`;
-
+        const infoboxContent = `<h3>Highest risk (lowest score) as ranked by L-DIT</h3>${generateSatelliteList(bottom5Satellites)}`;
         const topBottomInfoBox = document.getElementById('topBottomInfoBox');
         topBottomInfoBox.innerHTML = infoboxContent;
         topBottomInfoBox.style.display = 'none';
+        
+        document.querySelectorAll('.satellite-id').forEach(item => {
+            item.addEventListener('click', function() {
+                const searchId = this.dataset.id;
+                performSearch(searchId);
+            });
+        });
     }
 
     function generateSatelliteList(satellites) {
         return `<ul style="padding-left: 20px; list-style-type: none;">
-                    ${satellites.map(satellite => `<li> Score <b>${satellite.DIT.toFixed(2)}</b> [ID: ${satellite.id}] ${satellite.name}</li>`).join('')}
+                    ${satellites.map(satellite => 
+                        `<li> Score <b>${satellite.DIT.toFixed(2)}</b> 
+                        [ID: <span class="satellite-id" data-id="${satellite.id}" style="cursor: pointer; color: blue; text-decoration: underline;">
+                        ${satellite.id}</span>] ${satellite.name}</li>`).join('')}
                 </ul>`;
     }
 
@@ -314,4 +323,3 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     openNav();
 });
-
