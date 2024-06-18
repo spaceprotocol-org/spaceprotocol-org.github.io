@@ -252,10 +252,9 @@ document.addEventListener("DOMContentLoaded", async function() {
                 removeAllEntityPaths();
                 showEntityPath(entity);
                 highlightedEntities.push(entity);
-                // viewer.flyTo(entity).then(() => {
-                //     displayInfoBox(entity);
-                // });
-                displayInfoBox(entity);
+                viewer.flyTo(entity).then(() => {
+                     displayInfoBox(entity);
+                 });
             } else {
                 alert('Entity not found/ analysed');
             }
