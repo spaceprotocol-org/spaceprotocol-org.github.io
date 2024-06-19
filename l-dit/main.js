@@ -252,9 +252,15 @@ document.addEventListener("DOMContentLoaded", async function() {
                 removeAllEntityPaths();
                 showEntityPath(entity);
                 highlightedEntities.push(entity);
-                viewer.flyTo(entity).then(() => {
-                     displayInfoBox(entity);
-                 });
+
+                const entityPosition = entity.position.getValue(Cesium.JulianDate.now());
+                const offset = new Cesium.Cartesian3(100000000, 100000000, 100000000);
+                const destination = Cesium.Cartesian3.add(entityPosition, offset, new Cesium.Cartesian3());
+
+                viewer.camera.flyTo({
+                    destination: destination,
+                    complete: () => displayInfoBox(entity)
+                });
             } else {
                 alert('Entity not found/ analysed');
             }
