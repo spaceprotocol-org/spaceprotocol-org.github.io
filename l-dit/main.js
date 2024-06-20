@@ -249,22 +249,33 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (searchId) {
             const entity = dataSource.entities.getById(searchId);
             if (entity) {
-                removeAllEntityPaths();
-                showEntityPath(entity);
-                highlightedEntities.push(entity);
+                    removeAllEntityPaths();
+                    showEntityPath(entity);
+                    highlightedEntities.push(entity);
 
-                const entityPosition = entity.position.getValue(Cesium.JulianDate.now());
-                const offset = new Cesium.Cartesian3(100000000, 100000000, 100000000);
-                const destination = Cesium.Cartesian3.add(entityPosition, offset, new Cesium.Cartesian3());
+                    const entityPosition = entity.position.getValue(Cesium.JulianDate.now());
+                    
+                    const cartographic = Cesium.Cartographic.fromCartesian(entityPosition);
+                    const lat = cartographic.latitude;
+                    const lon = cartographic.longitude;
+                    const alt = cartographic.height;
+                    const zoomOutFactor = 5;
+                    const offsetLon = Math.max(100000000, lon * zoomOutFactor);
+                    const offsetLat = Math.max(100000000, lat * zoomOutFactor);
+                    const offsetAlt = Math.max(100000000, alt * zoomOutFactor);
+                    
+                    const offset = new Cesium.Cartesian3(offsetLon, offsetLat, offsetAlt);
+                    const destination = Cesium.Cartesian3.add(entityPosition, offset, new Cesium.Cartesian3());
 
-                viewer.camera.flyTo({
-                    destination: destination,
-                    complete: () => displayInfoBox(entity)
-                });
-            } else {
-                alert('Entity not found/ analysed');
-            }
-        }
+                    viewer.camera.flyTo({
+                        destination: destination,
+                        complete: () => displayInfoBox(entity)
+                    });
+                        }            
+            else {
+                   alert('Entity not found/ analysed');
+                 }
+                      }
     }
 
     searchButton.addEventListener('click', () => performSearch());
