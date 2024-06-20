@@ -113,8 +113,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     function showEntityPath(entity) {
         if (!entity.path) {
             entity.path = new Cesium.PathGraphics({
-                leadTime: Number.POSITIVE_INFINITY,
-                trailTime: Number.POSITIVE_INFINITY,
                 width: 1,
                 material: Cesium.Color.WHITE
             });
