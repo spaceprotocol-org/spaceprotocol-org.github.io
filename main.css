@@ -4,13 +4,13 @@
 }
 
 .u-section-1 .u-sheet-1 {
-  min-height: 865px;
+  min-height: 725px;
 }
 
 .u-section-1 .u-group-1 {
   min-height: 567px;
   height: auto;
-  margin-top: 139px;
+  margin-top: 0;
   margin-bottom: 0;
 }
 
@@ -34,6 +34,12 @@
 }
 
 .u-section-1 .u-btn-1 {
+  background-image: none;
+  text-decoration: underline !important;
+  padding: 0;
+}
+
+.u-section-1 .u-btn-2 {
   --radius: 6px;
   border-style: solid;
   font-size: 1.25rem;
@@ -50,7 +56,7 @@
   margin: 27px 0 60px auto;
 }
 
-.u-section-1 .u-btn-2 {
+.u-section-1 .u-btn-3 {
   background-image: none;
   text-decoration: underline !important;
   padding: 0;
