@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Space Protocol</title>
+  <meta
+    name="description"
+    content="Space Protocol powers a trustless decentralized operating system for space."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://spaceprotocol.org/" />
+  <meta property="og:title" content="Space Protocol — The Trustless Operating System for Space" />
+  <meta property="og:description" content="A trustless decentralized operating system for space safety, security, sustainability, and orbital compliance." />
+  <meta property="og:site_name" content="Space Protocol" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Space Protocol — The Trustless Operating System for Space" />
+  <meta name="twitter:description" content="A trustless decentralized operating system for space safety, security, sustainability, and orbital compliance." />
+  
+  <link rel="canonical" href="https://spaceprotocol.org/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BK506HJ8ND"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BK506HJ8ND');
+  </script>
+  
+  <style>
+    :root {
+      --navy: #050331;
+      --lavender: #9985ff;
+      --lavender-soft: #b8aaff;
+      --white: #ffffff;
+      --footer: #05002e;
+      --max: 1280px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--white);
+      color: var(--navy);
+      font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .section {
+      width: 100%;
+      position: relative;
+      background: #fff;
+    }
+
+    .inner {
+      width: min(var(--max), calc(100% - 96px));
+      margin: 0 auto;
+    }
+
+    /* HERO */
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 190px 48px 64px;
+    }
+
+    .brand {
+      margin: 0 0 100px;
+      font-size: 42px;
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      color: var(--navy);
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      margin: 0;
+      max-width: 1180px;
+      color: var(--lavender);
+      font-size: clamp(54px, 7.1vw, 116px);
+      line-height: 0.94;
+      font-weight: 300;
+      letter-spacing: -0.018em;
+      text-transform: uppercase;
+    }
+
+    .learn-more {
+      position: absolute;
+      right: 140px;
+      bottom: 74px;
+      display: inline-flex;
+      align-items: center;
+      gap: 38px;
+      font-size: 19px;
+      line-height: 1;
+      font-weight: 400;
+      text-decoration: none;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+
+    .learn-icon {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--navy);
+      border-radius: 50%;
+      position: relative;
+      display: inline-block;
+    }
+
+    .learn-icon::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 3px;
+      width: 2px;
+      height: 8px;
+      background: var(--navy);
+      transform: translateX(-50%);
+    }
+
+    .learn-icon::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 8px;
+      width: 6px;
+      height: 6px;
+      border-right: 2px solid var(--navy);
+      border-bottom: 2px solid var(--navy);
+      transform: translateX(-50%) rotate(45deg);
+    }
+
+    /* HEADINGS */
+
+    .page-heading,
+    .mission h2 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(58px, 7vw, 94px);
+      line-height: 1;
+      font-weight: 300;
+      letter-spacing: -0.06em;
+    }
+
+    /* MISSION */
+
+    .mission {
+      min-height: 100vh;
+      padding: 130px 0 120px;
+    }
+
+    .mission-grid {
+      width: min(1280px, calc(100% - 96px));
+      margin: 0 auto;
+    }
+
+    .mission-copy {
+      max-width: 1040px;
+      margin: 130px auto 0;
+      color: var(--lavender);
+      font-size: clamp(28px, 2.2vw, 39px);
+      line-height: 1.28;
+      font-weight: 300;
+      text-align: center;
+      letter-spacing: -0.03em;
+    }
+
+    /* SHARED CARD LAYOUT */
+
+    .split-section {
+      min-height: 100vh;
+      padding: 24px 0 80px;
+    }
+
+    .split-grid {
+      width: min(1280px, calc(100% - 96px));
+      margin: 0 auto;
+      display: block;
+    }
+
+    .card-block {
+      width: min(100%, 680px);
+      margin: 90px 0 0 auto;
+    }
+
+    .cards {
+      display: grid;
+      gap: 20px;
+    }
+
+    .cards.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card {
+      border: 4px solid var(--lavender);
+      border-radius: 10px;
+      min-height: 262px;
+      padding: 18px 20px 24px;
+      color: var(--navy);
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card h3 {
+      margin: 0;
+      color: var(--lavender);
+      font-size: clamp(34px, 3vw, 45px);
+      line-height: 1.04;
+      font-weight: 300;
+      letter-spacing: -0.045em;
+    }
+
+    .card p {
+      margin: 48px 0 0;
+      font-size: 22px;
+      line-height: 1.13;
+      font-weight: 400;
+      letter-spacing: -0.035em;
+    }
+
+    .card a,
+    .journey-card a {
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 3px;
+    }
+
+    /* PRODUCTS */
+
+    .products .card-block {
+      width: min(100%, 680px);
+    }
+
+    /* PUBLICATIONS */
+
+    .publications {
+      min-height: auto;
+      padding-top: 0;
+      padding-bottom: 100px;
+    }
+
+    .publications .card-block {
+      width: min(100%, 720px);
+    }
+
+    .publication-layout {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      align-items: start;
+    }
+
+    .publication-layout .card {
+      min-height: 280px;
+    }
+
+    .publication-layout .card h3 {
+      font-size: clamp(34px, 2.8vw, 45px);
+    }
+
+    .publication-layout .card p {
+      margin-top: 46px;
+    }
+
+    /* JOURNEY */
+
+    .journey {
+      min-height: auto;
+      padding-top: 0;
+      padding-bottom: 170px;
+    }
+
+    .journey-grid {
+      width: min(1280px, calc(100% - 96px));
+      margin: 0 auto;
+      display: block;
+    }
+
+    .journey-card-block {
+      width: min(100%, 680px);
+      margin: 90px 0 0 auto;
+    }
+
+    .journey-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .journey-card {
+      border: 4px solid var(--lavender);
+      border-radius: 8px;
+      min-height: 282px;
+      padding: 16px 22px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .journey-card.wide {
+      grid-column: 1 / -1;
+      min-height: 160px;
+      padding: 12px 44px 34px;
+    }
+
+    .journey-card h3 {
+      margin: 0;
+      color: var(--lavender);
+      font-size: 39px;
+      line-height: 1.04;
+      font-weight: 300;
+      letter-spacing: -0.05em;
+      text-decoration: underline;
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 4px;
+    }
+
+    .journey-card h3 a {
+      color: inherit;
+      text-decoration: inherit;
+      text-decoration-thickness: inherit;
+      text-underline-offset: inherit;
+    }
+
+    .journey-card.wide h3 {
+      text-align: center;
+      font-size: 36px;
+      font-weight: 400;
+      letter-spacing: -0.04em;
+    }
+
+    .journey-card p {
+      margin: 44px 0 0;
+      color: var(--navy);
+      font-size: 19px;
+      line-height: 1.18;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+    }
+
+    .journey-card.wide p {
+      margin-top: 36px;
+      font-size: 18px;
+      line-height: 1.18;
+    }
+
+    /* QUOTE */
+
+    .quote {
+      min-height: 360px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 20px;
+      text-align: center;
+    }
+
+    .quote p {
+      margin: 0;
+      max-width: 900px;
+      color: var(--lavender-soft);
+      font-size: clamp(28px, 2.55vw, 42px);
+      line-height: 1.22;
+      font-weight: 300;
+      letter-spacing: -0.04em;
+    }
+
+    /* CONTACT */
+
+    .contact {
+      min-height: 720px;
+      background: var(--footer);
+      color: #ecffff;
+      padding: 105px 0 70px;
+    }
+
+    .contact-inner {
+      width: min(1060px, calc(100% - 96px));
+      margin: 0 auto;
+      position: relative;
+      min-height: 540px;
+    }
+
+    .contact h2 {
+      margin: 0;
+      font-size: clamp(50px, 4.8vw, 72px);
+      line-height: 1.05;
+      font-weight: 300;
+      letter-spacing: -0.045em;
+    }
+
+    .contact p {
+      margin: 28px 0 0;
+      font-size: 20px;
+      line-height: 1.3;
+      color: #f5ffff;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    .contact-label {
+      position: absolute;
+      left: 0;
+      bottom: 30px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+    }
+
+    .linkedin-card {
+      position: absolute;
+      right: 70px;
+      bottom: 28px;
+      width: 260px;
+      height: 110px;
+      background: var(--lavender);
+      border-radius: 3px;
+      color: var(--navy);
+      padding: 18px;
+      text-decoration: none;
+    }
+
+    .linkedin-card span {
+      display: block;
+      font-size: 18px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      font-weight: 400;
+    }
+
+    .linkedin-icon {
+      display: grid;
+      place-items: center;
+      width: 31px;
+      height: 31px;
+      background: #0a99b5;
+      color: #fff;
+      border-radius: 3px;
+      font-weight: 700;
+      font-size: 22px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1100px) {
+      .cards.two,
+      .publication-layout,
+      .journey-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .mission-copy {
+        margin-top: 96px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .inner,
+      .mission-grid,
+      .split-grid,
+      .journey-grid,
+      .contact-inner {
+        width: min(100% - 32px, var(--max));
+      }
+
+      .hero {
+        padding: 96px 20px 64px;
+      }
+
+      .brand {
+        margin-bottom: 90px;
+        font-size: 24px;
+      }
+
+      .hero-title {
+        font-size: clamp(42px, 12vw, 72px);
+      }
+
+      .learn-more {
+        right: 28px;
+        bottom: 42px;
+        font-size: 14px;
+        gap: 18px;
+      }
+
+      .mission {
+        padding-top: 84px;
+      }
+
+      .mission-copy {
+        margin-top: 92px;
+        font-size: 26px;
+      }
+
+      .page-heading,
+      .mission h2 {
+        font-size: 54px;
+      }
+
+      .card-block,
+      .journey-card-block {
+        margin-top: 64px;
+      }
+
+      .cards.two,
+      .publication-layout,
+      .journey-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .card,
+      .journey-card {
+        min-height: auto;
+      }
+
+      .card h3,
+      .journey-card h3 {
+        font-size: 38px;
+      }
+
+      .card p,
+      .journey-card p {
+        font-size: 20px;
+      }
+
+      .journey {
+        padding-bottom: 110px;
+      }
+
+      .quote {
+        min-height: 320px;
+      }
+
+      .contact {
+        min-height: 640px;
+      }
+
+      .contact-inner {
+        min-height: 470px;
+      }
+
+      .linkedin-card {
+        left: 0;
+        right: auto;
+        bottom: 86px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <section class="section hero" id="top">
+      <h1 class="brand">Space Protocol</h1>
+
+      <p class="hero-title">
+        The trustless<br />
+        operating system<br />
+        for space
+      </p>
+
+      <a class="learn-more" href="#mission">
+        <span>Learn More</span>
+        <span class="learn-icon" aria-hidden="true"></span>
+      </a>
+    </section>
+
+    <section class="section mission" id="mission">
+      <div class="mission-grid">
+        <h2>Mission statement</h2>
+
+        <p class="mission-copy">
+          Space Protocol powers a trustless decentralized operating system for
+          space. Satellites autonomously sense, share, and react, delivering
+          real-time risk quantification and orbital compliance. This ensures
+          secure, traceable data, liability coverage, and a trusted marketplace
+          for cross-verified space intelligence—driving efficiency and trust for
+          space operations.
+        </p>
+      </div>
+    </section>
+
+    <section class="section split-section products" id="products">
+      <div class="split-grid">
+        <h2 class="page-heading">Products</h2>
+
+        <div class="card-block">
+          <div class="cards two">
+            <article class="card">
+              <h3>Automatic<br />Sensor<br />Calibration</h3>
+              <p>
+                Calibration forms the basis of good data. Our algorithms provide
+                real-time sensor calibration using novel algorithms.
+              </p>
+            </article>
+
+            <article class="card">
+              <h3>Event Sensor<br />powered<br />GPS-denied<br />solution</h3>
+              <p>
+                Robust event sensor based visual positioning system for
+                GPS-contested and GPS-denied environments
+              </p>
+            </article>
+
+            <article class="card">
+              <h3>Uncorrelated<br />Tracks<br />Processing</h3>
+              <p>
+                Knowing what’s out there can be difficult. Our algorithms are
+                there to help find out what’s what in space.
+              </p>
+            </article>
+
+            <article class="card">
+              <h3>Space Supply<br />Chain<br />traceability</h3>
+              <p>
+                From chip to launch, we offer reliability and transparency through
+                our supply chain for space solutions.
+              </p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section split-section publications" id="publications">
+      <div class="split-grid">
+        <h2 class="page-heading">Publications</h2>
+
+        <div class="card-block">
+          <div class="publication-layout">
+            <article class="card">
+              <h3>Post-Quantum<br />Blockchain<br />Whitepaper</h3>
+              <p>
+                At IAC 2025, Space Protocol presented
+                <a
+                  href="https://publications.spaceprotocol.org/SpaceProtocol_IAC_2025_ASTERISK_Whitepaper.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >ASTERISK</a>:
+                a quantum-resilient safety framework for trusted space and air
+                operations
+              </p>
+            </article>
+
+            <article class="card">
+              <h3>Quantum<br />Blockchain for<br />Space Battle<br />Management</h3>
+              <p>
+                Space Protocol’s Quantum-Resilient Blockchain as the Backbone for
+                <a
+                  href="https://publications.spaceprotocol.org/SpaceProtocol_AMOS_2025_Quantum_Resistant_Chain_Whitepaper.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Explainable and Accountable</a>
+                Space Battle Management Systems, AMOS 2025
+              </p>
+            </article>
+
+            <article class="card">
+              <h3>Space<br />Protocol<br />Whitepaper</h3>
+              <p>
+                At AMOS 2024, Space Protocol presented its
+                <a
+                  href="https://amostech.com/TechnicalPapers/2024/Poster/Latif.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >long-term vision</a>
+                for space safety, sustainability and security.
+              </p>
+            </article>
+
+            <article class="card">
+              <h3>Satellite<br />ranking by<br />Sustainability</h3>
+              <p>
+                Using live satellite tracking data, Space Protocol algorithms can
+                estimate
+                <a
+                  href="https://arxiv.org/abs/2404.18350"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >long term sustainability</a>
+                of each space object
+              </p>
+            </article>
+
+            <article class="card">
+              <h3>Space Supply<br />Chain<br />traceability</h3>
+              <p>
+                From chip to launch, we are building mechanism for transparency
+                through our
+                <a
+                  href="https://amostech.com/TechnicalPapers/2025/Poster/Latif.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >supply chain for space solutions</a>.
+              </p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section journey" id="journey">
+      <div class="journey-grid">
+        <h2 class="page-heading">Journey</h2>
+
+        <div class="journey-card-block">
+          <div class="journey-cards">
+            <article class="journey-card wide">
+              <h3>
+                <a
+                  href="https://sdataplab.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >3x SDA TAP Lab Contracts</a>
+              </h3>
+              <p>
+                Working closely with the US Space Command, Space Protocol has been
+                awarded 3x contracts to develop precise sensor calibration and
+                enable UCT processing
+              </p>
+            </article>
+
+            <article class="journey-card">
+              <h3>
+                <a
+                  href="https://www.deconference.com.au/copy-of-speakers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >deconference<br />2025</a>
+              </h3>
+              <p>
+                Space Protocol was invited for a keynote at the Australian Digital
+                Economy Conference 2025, Gold Coast, Australia.
+              </p>
+            </article>
+
+            <article class="journey-card">
+              <h3>
+                <a
+                  href="https://sdataplab.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >SDA TAP Lab<br />Cohorts 4 - 9</a>
+              </h3>
+              <p>
+                Working with US Space Force to avoid operational surprise. Space
+                Protocol has participated in on-going cohorts at the TAP Lab.
+              </p>
+            </article>
+
+            <article class="journey-card">
+              <h3>
+                <a
+                  href="https://app.terrapinn.com/event/aerospace-tech-week-americas-2024/planning/UGxhbm5pbmdfMjIyMTg5MA=="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Aerospace<br />Tech Week</a>
+              </h3>
+              <p>
+                Space Protocol presented at Aerospace TechWeek Americas 2024 held
+                at Atlanta
+              </p>
+            </article>
+
+            <article class="journey-card">
+              <h3>
+                <a
+                  href="https://aws.amazon.com/blogs/publicsector/aws-space-accelerator-program-to-support-67-startups-across-australia-india-and-japan/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Amazon<br />Space<br />Accelerator</a>
+              </h3>
+              <p>
+                Space Protocol was one of the only 16 Australian startups selected
+                for the Amazon Space Accelerator program.
+              </p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote">
+      <p>
+        “As we explore space, every decision we make<br />
+        impacts space utilization for future generations.<br />
+        Its paramount to make better decision which<br />
+        can only be enabled by better data.”
+      </p>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="contact-inner">
+        <h2>Ready to work with us?</h2>
+        <p>Send us a message and let's talk about it.</p>
+
+        <div class="contact-label">Contact Us</div>
+
+        <a
+          class="linkedin-card"
+          href="https://www.linkedin.com/company/spaceprotocolorg/posts/?feedView=all"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>LinkedIn</span>
+          <div class="linkedin-icon">in</div>
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
